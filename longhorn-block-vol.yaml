@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-block-vol
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Block # Será um volume do tipo Block (e nao FS)
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
+
+# Os parametros abaixo serão definidos pelo StorageClass: (e possivel criar outros StorageClass)
+# - Numero de replicas
+# - Reclaim Policy
+# - Allow Volume Expansion 

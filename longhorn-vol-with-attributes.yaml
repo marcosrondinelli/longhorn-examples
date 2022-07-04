@@ -1,0 +1,36 @@
+# Neste exemplo os "volumeAttributes" nao dependem do StorageClass
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: longhorn-vol-pv
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: '3'
+      staleReplicaTimeout: '2880'
+    volumeHandle: vol001 # Este volume deve ser previamente criado na GUI do Longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: longhorn-vol-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: longhorn-vol-pv
+  storageClassName: longhorn
+
